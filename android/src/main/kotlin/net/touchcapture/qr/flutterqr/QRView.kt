@@ -3,6 +3,7 @@ package net.touchcapture.qr.flutterqr
 import android.Manifest
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Camera.CameraInfo
 import android.os.Build
@@ -13,6 +14,7 @@ import com.google.zxing.ResultPoint
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.BarcodeView
+import com.journeyapps.barcodescanner.DefaultDecoderFactory
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -199,8 +201,10 @@ class QRView(messenger: BinaryMessenger, id: Int, private val params: HashMap<St
     private fun initBarCodeView(): BarcodeView? {
         if (barcodeView == null) {
             barcodeView = BarcodeView(Shared.activity)
+            barcodeView!!.setDecoderFactory(DefaultDecoderFactory(null,null,null,2))
             if (params["cameraFacing"] as Int == 1) {
                 barcodeView?.cameraSettings?.requestedCameraId = CameraInfo.CAMERA_FACING_FRONT
+
             }
         } else {
             if (hasCameraPermission()) {
